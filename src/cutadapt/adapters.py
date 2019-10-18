@@ -162,6 +162,7 @@ class AdapterStatistics:
             raise ValueError('incompatible objects')
         self.front += other.front
         self.back += other.back
+        self.was_reverse_complemented += other.was_reverse_complemented
         return self
 
 

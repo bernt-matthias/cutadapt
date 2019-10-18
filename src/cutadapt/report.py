@@ -4,7 +4,8 @@ Routines for printing a report.
 from io import StringIO
 import textwrap
 from .adapters import Where, EndStatistics, ADAPTER_TYPE_NAMES
-from .modifiers import QualityTrimmer, NextseqQualityTrimmer, AdapterCutter, PairedAdapterCutter
+from .modifiers import (QualityTrimmer, NextseqQualityTrimmer, AdapterCutter, PairedAdapterCutter,
+    ReverseComplementer)
 from .filters import (NoFilter, PairedNoFilter, TooShortReadFilter, TooLongReadFilter,
     PairedDemultiplexer, CombinatorialDemultiplexer, Demultiplexer, NContentFilter, InfoFileWriter,
     WildcardFileWriter, RestFileWriter)
@@ -128,6 +129,10 @@ class Statistics:
             elif isinstance(modifier, AdapterCutter):
                 self.with_adapters[i] += modifier.with_adapters
                 self.adapter_stats[i] = list(modifier.adapter_statistics.values())
+            elif isinstance(modifier, ReverseComplementer):
+                self.with_adapters[i] += modifier.adapter_cutter.with_adapters
+                self.adapter_stats[i] = list(modifier.adapter_cutter.adapter_statistics.values())
+        import ipdb; ipdb.set_trace()
 
     @property
     def total(self):
